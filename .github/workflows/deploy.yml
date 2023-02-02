@@ -17,7 +17,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Install OCI CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        wget https://github.com/oracle/oci-cli/releases/download/v2.9.14/oci-cli-v2.9.14.zip
+        unzip oci-cli-v2.9.14.zip
+        sudo mv oci /usr/local/bin
+
     - name: Deploy to OCI
-      uses: docker://oracle/oci-cli:latest
-      with:
-        args: deploy function -f function.yaml -c ${OCI_USERNAME} -u ${OCI_USERNAME} -p ${OCI_PASSWORD}
+      run: |
+        echo ${OCI_PASSWORD} | oci --auth instance_principal --profile default login
+        oci functions action invoke --function-id <function_id> --input '{}'
