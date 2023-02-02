@@ -1,0 +1,23 @@
+name: Deploy to OCI
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  OCI_USERNAME: ${{ secrets.OCI_USERNAME }}
+  OCI_PASSWORD: ${{ secrets.OCI_PASSWORD }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to OCI
+      uses: docker://oracle/oci-cli:latest
+      with:
+        args: deploy function -f function.yaml -c ${OCI_USERNAME} -u ${OCI_USERNAME} -p ${OCI_PASSWORD}
