@@ -27,6 +27,7 @@ jobs:
     
     - name: Deploy to VM Server
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.IP_ADDRESS }} "cd action1 && git pull"
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.IP_ADDRESS }} "cd actions && git clone https://github.com/Sarvesh3001/Actions.git ."
+
 
 
