@@ -27,4 +27,5 @@ jobs:
     
     - name: Deploy to VM Server
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.IP_ADDRESS }} "cd <your_destination_folder> && git pull"
+        ssh -o StrictHostKeyChecking=no <your_username>@${{ env.IP_ADDRESS }} "cd <your_destination_folder>; git pull"
+
