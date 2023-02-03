@@ -17,11 +17,10 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Setup SSH Key
-      uses: shimataro/ssh-key-setup-action@v0.4.0
+      uses: actions/setup-ssh@v1
       with:
-        private-key: ${{ secrets.SSH_KEY }}
-        known-hosts: ${{ env.IP_ADDRESS }}
+        ssh-private-key: ${{ secrets.SSH_KEY }}
     
-    - name: Deploy to VM Server
+    - name: Add known host
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ env.IP_ADDRESS }} "cd <your_destination_folder> && git pull"
+        echo "${{ env.IP_ADDRESS }} ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9dpIq3M4WL22QLLeDYIgKjnZlxWlDR8gIjKX9nQfogasLWy5b5a5g5kk5K7dzvIUhWg/iCQ3l4Om57xv/8Wt1R/tbOe9VAc5y5p5zmAZoHGRh0z/73gZjKdDwwofMZ1kX9EbQnpoiWU7upfK1AuC7msxg6pWk6H93U6+Xn7hxo0uo+jKdGJh6gL0Qlu9UOjrH0oIy+fKjJv4eW4bQMk0ZoucL+gcTgT0T9Xpj+d0cV7RvBhWx
