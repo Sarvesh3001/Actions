@@ -1,4 +1,4 @@
-name: Deploy to OCI
+name: Deploy to VM Server
 
 on:
   push:
@@ -6,26 +6,22 @@ on:
       - main
 
 env:
-  OCI_USERNAME: ${{ secrets.OCI_USERNAME }}
-  OCI_PASSWORD: ${{ secrets.OCI_PASSWORD }}
+  IP_ADDRESS: 144.24.130.225
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+  
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Install OCI CLI
+    
+    - name: Setup SSH Key
+      uses: shimataro/ssh-key-setup-action@v0.4.0
+      with:
+        private-key: ${{ secrets.SSH_KEY }}
+        known-hosts: ${{ env.IP_ADDRESS }}
+    
+    - name: Deploy to VM Server
       run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip
-        wget https://github.com/oracle/oci-cli/releases/download/v2.9.14/oci-cli-v2.9.14.zip
-        unzip oci-cli-v2.9.14.zip
-        sudo mv oci /usr/local/bin
-
-    - name: Deploy to OCI
-      run: |
-        echo ${OCI_PASSWORD} | oci --auth instance_principal --profile default login
-        oci functions action invoke --function-id <function_id> --input '{}'
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ env.IP_ADDRESS }} "cd <your_destination_folder> && git pull"
