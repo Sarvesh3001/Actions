@@ -27,7 +27,7 @@ jobs:
     
     - name: Deploy to VM Server
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.IP_ADDRESS }} "cd action1"
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.IP_ADDRESS }} "cd action1s"
 
 
 
