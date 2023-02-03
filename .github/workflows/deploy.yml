@@ -19,7 +19,7 @@ jobs:
     - name: Setup SSH Key
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        username: <your_username>
+        username: ubuntu
         private-key: ${{ secrets.SSH_KEY }}
     
     - name: Add known host
