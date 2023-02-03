@@ -16,12 +16,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     
-    - name: Setup SSH Key
+    - name: Setup SSH Agent
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        username: ubuntu
-        private-key: ${{ secrets.SSH_KEY }}
+        ssh-private-key: ${{ secrets.SSH_KEY }}
     
     - name: Add known host
       run: |
-        echo "${{ env.IP_ADDRESS }} ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9dpIq3M4WL22QLLeDYIgKjnZlxWlDR8gIjKX9nQfogasLWy5b5a5g5kk5K7dzvIUhWg/iCQ3l4Om57
+        echo "${{ env.IP_ADDRESS }} ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9dpIq3M4WL22QLLeDYIgKjnZlxWlDR8gIjKX9nQfogasLWy5b5a5g5kk5K7dzvIUhWg/iCQ3l4Om57xv/8Wt1R/tbOe9VAc5y5p5zmAZoHGRh0z/73gZjKdDwwofMZ1kX9EbQnpoiWU7upfK1AuC7msxg6pWk6H93U6+Xn7hxo0uo+jKdGJh6gL0Qlu9UOjrH0oIy+fKjJv4eW4bQMk0ZoucL+gcTgT0T9Xpj+d0cV7RvBhWx" >> ~/.ssh/known_hosts
+    
+    - name: Deploy to VM Server
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.IP_ADDRESS }} "cd <your_destination_folder> && git pull"
